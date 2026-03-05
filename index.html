@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkTree Personalizada | Efeitos Modernos</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts para fonte moderna -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #0a0a0a;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Efeito de fundo animado com partículas */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 15% 15%, rgba(30, 58, 138, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(17, 24, 39, 0.25) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(55, 65, 81, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 70% 30%, rgba(59, 130, 246, 0.08) 0%, transparent 35%),
+                radial-gradient(circle at 30% 70%, rgba(107, 114, 128, 0.1) 0%, transparent 35%),
+                linear-gradient(135deg, #0a0a0a 0%, #111827 25%, #1f2937 50%, #111827 75%, #0a0a0a 100%);
+            background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 400% 400%;
+            animation: gradientShift 25s ease infinite;
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { 
+                background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 50%;
+            }
+            25% {
+                background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 25% 50%;
+            }
+            50% { 
+                background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 100% 50%;
+            }
+            75% {
+                background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 75% 50%;
+            }
+        }
+        
+        /* Efeito de blur nos cards - ULTRA GLASS */
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4),
+                        inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .glass-effect:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 12px 48px 0 rgba(0, 0, 0, 0.5),
+                        inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        /* Efeito de LED animado PREMIUM nos cards */
+        .led-effect {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .led-effect::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(
+                from 0deg,
+                transparent 0deg,
+                rgba(59, 130, 246, 0.5) 90deg,
+                rgba(96, 165, 250, 0.8) 180deg,
+                rgba(59, 130, 246, 0.5) 270deg,
+                transparent 360deg
+            );
+            animation: ledRotate 4s linear infinite;
+            opacity: 0;
+            z-index: -1;
+        }
+        
+        .led-effect:hover::before {
+            opacity: 1;
+        }
+        
+        @keyframes ledRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Efeito de borda neon */
+        .neon-border {
+            position: relative;
+        }
+        
+        .neon-border::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 2px;
+            background: linear-gradient(45deg, #1e3a8a, #3b82f6, #60a5fa, #93c5fd);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .neon-border:hover::after {
+            opacity: 0.6;
+        }
+        
+        /* Animação dos botões PREMIUM */
+        .btn-transition {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+        
+        .btn-transition:hover {
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 25px 50px -15px rgba(0, 0, 0, 0.6),
+                        0 0 30px rgba(255, 255, 255, 0.1);
+        }
+        
+        .btn-transition:active {
+            transform: translateY(-2px) scale(1.01);
+        }
+        
+        /* Foto de perfil circular PREMIUM */
+        .profile-img {
+            border: 4px solid rgba(59, 130, 246, 0.4);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 40px rgba(59, 130, 246, 0.4),
+                        0 0 80px rgba(30, 58, 138, 0.3),
+                        0 20px 40px rgba(0, 0, 0, 0.5),
+                        inset 0 0 20px rgba(96, 165, 250, 0.1);
+        }
+        
+        .profile-img:hover {
+            transform: scale(1.05);
+            border-color: rgba(96, 165, 250, 0.6);
+            box-shadow: 0 0 50px rgba(59, 130, 246, 0.5),
+                        0 0 100px rgba(30, 58, 138, 0.4),
+                        0 25px 50px rgba(0, 0, 0, 0.6);
+        }
+        
+        /* Container do banner */
+        .banner-container {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5),
+                        0 0 40px rgba(30, 58, 138, 0.6),
+                        0 0 80px rgba(59, 130, 246, 0.3);
+            border: 2px solid rgba(59, 130, 246, 0.4);
+            animation: bannerGlow 3s ease-in-out infinite;
+        }
+        
+        @keyframes bannerGlow {
+            0%, 100% {
+                box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5),
+                            0 0 40px rgba(30, 58, 138, 0.6),
+                            0 0 80px rgba(59, 130, 246, 0.3);
+            }
+            50% {
+                box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5),
+                            0 0 60px rgba(30, 58, 138, 0.8),
+                            0 0 120px rgba(59, 130, 246, 0.5);
+            }
+        }
+        
+        .banner-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: brightness(0.9);
+        }
+        
+        .banner-container:hover .banner-img {
+            transform: scale(1.08);
+            filter: brightness(1);
+        }
+        
+        /* Overlay do banner para efeito glass */
+        .banner-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent 60%, rgba(0, 0, 0, 0.7) 100%);
+            pointer-events: none;
+        }
+        
+        /* Links com degrade personalizado */
+        .gradient-link {
+            position: relative;
+            background-size: 200% 200%;
+            animation: gradientShift 8s ease infinite;
+        }
+        
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* Efeito de brilho PREMIUM nos links */
+        .link-glow {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .link-glow::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+            pointer-events: none;
+        }
+        
+        .link-glow:hover::after {
+            width: 300%;
+            height: 300%;
+        }
+        
+        /* Efeito de shimmer */
+        .shimmer {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .shimmer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            animation: shimmerSlide 3s infinite;
+        }
+        
+        @keyframes shimmerSlide {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        /* Scrollbar personalizada */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, #1e3a8a, #3b82f6);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(45deg, #1e40af, #60a5fa);
+        }
+        
+        /* Animações de entrada */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        /* Efeito de partículas flutuantes */
+        .floating-particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            background: rgba(59, 130, 246, 0.15);
+            border-radius: 50%;
+            animation: float 20s infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(50px);
+                opacity: 0;
+            }
+        }
+        
+        /* Texto com gradiente animado */
+        .gradient-text {
+            background: linear-gradient(45deg, #374151, #6b7280, #9ca3af, #d1d5db, #f3f4f6);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientFlow 5s ease infinite;
+        }
+        
+        @keyframes gradientFlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+    </style>
+</head>
+<body class="relative">
+    <!-- Fundo animado -->
+    <div class="animated-bg"></div>
+    
+    <!-- Partículas flutuantes -->
+    <div class="floating-particles" id="particles"></div>
+    
+    <!-- Container principal -->
+    <div class="container mx-auto px-4 py-8 max-w-2xl relative z-10">
+        <!-- Banner personalizável -->
+        <div class="banner-container mb-8 shimmer" style="animation: fadeInScale 0.8s ease forwards;">
+            <img id="bannerImage" class="banner-img" src="./img/banner samptech.jpeg" alt="Banner">
+            <div class="banner-overlay"></div>
+        </div>
+        
+        <!-- Perfil -->
+        <div class="text-center mb-8 relative" style="animation: fadeInUp 0.8s ease 0.2s forwards; opacity: 0;">
+            <div class="relative inline-block">
+                <img id="profileImage" class="profile-img w-32 h-32 rounded-full object-cover mx-auto" src="./img/sampbost.jpg" alt="Profile">
+            </div>
+            <h1 id="profileName" class="text-4xl font-bold text-white mt-6 mb-3 gradient-text drop-shadow-2xl">Samptech - Assistência Técnica</h1>
+            <p id="profileBio" class="text-gray-300 max-w-md mx-auto text-lg drop-shadow-lg">Resolvemos seus problemas tecnológicos com agilidade, transparência e qualidade.</p>
+        </div>
+        
+        <!-- Seção de links -->
+        <div id="linksContainer" class="space-y-4 mb-8">
+            <!-- Links serão inseridos aqui via JavaScript -->
+        </div>
+        
+        <!-- Rodapé -->
+        <div class="text-center text-gray-500 text-sm glass-effect py-4 rounded-xl shimmer shadow-xl" style="animation: fadeInUp 0.8s ease 1s forwards; opacity: 0;">
+            <p class="drop-shadow-md">© LinkTree Personalizado | Todos os direitos reservados</p>
+        </div>
+    </div>
+
+    <script>
+        // Estado da aplicação
+        let links = [
+            { title: 'Conheça nosso site', url: 'https://samptech.ct.ws', color1: '#1e3a8a', color2: '#3b82f6', imageUrl: './icons/samp.png' },
+            { title: ' Instagram', url: 'https://www.instagram.com/samptechassistencia', color1: '#1e40af', color2: '#60a5fa', imageUrl: './icons/instagram.png' },
+            { title: 'Whatsapp', url: 'https://api.whatsapp.com/send/?phone=5564992800407&text&type=phone_number&app_absent=0', color1: '#1e293b', color2: '#475569', imageUrl: './icons/whats.png' },
+            { title: 'Facebook', url: 'https://www.facebook.com/share/1Xbvmv8d3v/', color1: '#0f172a', color2: '#334155', imageUrl: './icons/face.jpg' }
+        ];
+        
+        let currentGradientColor1 = '#ff6b6b';
+        let currentGradientColor2 = '#4ecdc4';
+        let currentPngUrl = '';
+        
+        // Função para renderizar links
+        function renderLinks() {
+            const container = document.getElementById('linksContainer');
+            container.innerHTML = '';
+            
+            links.forEach((link, index) => {
+                const linkElement = createLinkElement(link, index);
+                container.appendChild(linkElement);
+            });
+        }
+        
+        // Função para criar elemento de link
+        function createLinkElement(link, index) {
+            const div = document.createElement('div');
+            div.className = 'relative group';
+            
+            const gradientStyle = link.imageUrl ? 
+                `linear-gradient(135deg, ${link.color1}, ${link.color2}), url('${link.imageUrl}')` :
+                `linear-gradient(135deg, ${link.color1}, ${link.color2})`;
+            
+            div.innerHTML = `
+                <div class="glass-effect led-effect neon-border rounded-xl p-1 btn-transition link-glow shimmer shadow-2xl">
+                    <a href="${link.url}" target="_blank" class="block relative overflow-hidden rounded-lg group">
+                        <div class="relative px-6 py-5 flex items-center gap-4 text-white">
+                            <div class="w-12 h-12 flex items-center justify-center rounded-xl bg-gradient-to-br from-blue-500/20 to-blue-900/20 backdrop-blur-md transition-all duration-500 group-hover:scale-125 group-hover:rotate-12 group-hover:from-blue-400/30 group-hover:to-blue-800/30 shadow-xl border border-white/10">
+                                <img src="${link.imageUrl}" class="w-8 h-8 object-contain drop-shadow-2xl transition-transform duration-500 group-hover:scale-110" alt="icon">
+                            </div>
+                            <span class="font-bold text-xl tracking-wide drop-shadow-lg transition-all duration-300 group-hover:translate-x-2">${link.title}</span>
+                            <i class="fas fa-arrow-right ml-auto opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-x-[-10px] group-hover:translate-x-0 drop-shadow-lg text-xl"></i>
+                        </div>
+                    </a>
+                </div>
+            `;
+            
+            return div;
+        }
+        
+
+        
+        // Função para mostrar notificação
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'fixed bottom-4 right-4 glass-effect text-white px-6 py-3 rounded-xl animate-bounce';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+        
+        // Efeito de digitação na bio
+        function typeWriter(element, text, speed = 50) {
+            let i = 0;
+            element.textContent = '';
+            element.style.borderRight = '2px solid rgba(255,255,255,0.7)';
+            element.style.paddingRight = '5px';
+            
+            function type() {
+                if (i < text.length) {
+                    element.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                } else {
+                    // Remove cursor após digitação
+                    setTimeout(() => {
+                        element.style.borderRight = 'none';
+                    }, 500);
+                }
+            }
+            
+            type();
+        }
+        
+        // Event listeners para conteúdo editável
+        document.addEventListener('DOMContentLoaded', () => {
+            // Cria partículas flutuantes
+            createFloatingParticles();
+            
+            renderLinks();
+            
+            // Adiciona efeito de digitação na bio
+            const bioElement = document.getElementById('profileBio');
+            const originalBio = bioElement.textContent;
+            setTimeout(() => {
+                typeWriter(bioElement, originalBio, 50);
+            }, 800);
+            
+            // Animação de entrada dos links com stagger
+            setTimeout(() => {
+                const linkElements = document.querySelectorAll('#linksContainer > div');
+                linkElements.forEach((link, index) => {
+                    link.style.animation = `fadeInUp 0.6s ease forwards`;
+                    link.style.animationDelay = `${0.4 + index * 0.1}s`;
+                    link.style.opacity = '0';
+                });
+            }, 100);
+            
+            // Adiciona efeito parallax no mouse
+            addParallaxEffect();
+        });
+        
+        // Cria partículas flutuantes
+        function createFloatingParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 15;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const size = Math.random() * 4 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.animationDelay = `${Math.random() * 20}s`;
+                particle.style.animationDuration = `${Math.random() * 10 + 15}s`;
+                
+                container.appendChild(particle);
+            }
+        }
+        
+        // Efeito parallax no mouse
+        function addParallaxEffect() {
+            document.addEventListener('mousemove', (e) => {
+                const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
+                const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
+                
+                const profile = document.querySelector('.profile-img');
+                if (profile) {
+                    profile.style.transform = `translate(${moveX}px, ${moveY}px)`;
+                }
+            });
+        }
+        
+        // Salva dados no localStorage
+        function saveToLocalStorage() {
+            const data = {
+                links: links,
+                profileName: document.getElementById('profileName').textContent,
+                profileBio: document.getElementById('profileBio').textContent,
+                bannerImage: document.getElementById('bannerImage').src,
+                profileImage: document.getElementById('profileImage').src
+            };
+            localStorage.setItem('linktreeData', JSON.stringify(data));
+        }
+        
+        // Carrega dados do localStorage
+        function loadFromLocalStorage() {
+            const saved = localStorage.getItem('linktreeData');
+            if (saved) {
+                const data = JSON.parse(saved);
+                links = data.links;
+                document.getElementById('profileName').textContent = data.profileName;
+                document.getElementById('profileBio').textContent = data.profileBio;
+                document.getElementById('bannerImage').src = data.bannerImage;
+                document.getElementById('profileImage').src = data.profileImage;
+                renderLinks();
+            }
+        }
+        
+        // Tenta carregar dados salvos
+        // loadFromLocalStorage(); // REMOVIDO - agora usa HTML direto
+        
+        // Salva dados quando a página for fechada
+        // window.addEventListener('beforeunload', saveToLocalStorage); // REMOVIDO
+    </script>
+</body>
+</html>
