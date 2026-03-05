@@ -45,6 +45,36 @@
             animation: gradientShift 25s ease infinite;
         }
         
+        /* Efeito de galáxia com estrelas */
+        .galaxy-stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s ease-in-out infinite;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { 
+                opacity: 0.3;
+                box-shadow: 0 0 2px rgba(255, 255, 255, 0.5);
+            }
+            50% { 
+                opacity: 1;
+                box-shadow: 0 0 8px rgba(255, 255, 255, 0.9),
+                            0 0 12px rgba(59, 130, 246, 0.6);
+            }
+        }
+        
         @keyframes gradientShift {
             0%, 100% { 
                 background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 50%;
@@ -486,6 +516,9 @@
     <!-- Fundo animado -->
     <div class="animated-bg"></div>
     
+    <!-- Galáxia de estrelas -->
+    <div class="galaxy-stars" id="galaxyStars"></div>
+    
     <!-- Partículas flutuantes -->
     <div class="floating-particles" id="particles"></div>
     
@@ -606,6 +639,9 @@
         
         // Event listeners para conteúdo editável
         document.addEventListener('DOMContentLoaded', () => {
+            // Cria galáxia de estrelas
+            createGalaxyStars();
+            
             // Cria partículas flutuantes
             createFloatingParticles();
             
@@ -631,6 +667,27 @@
             // Adiciona efeito parallax no mouse
             addParallaxEffect();
         });
+        
+        // Cria galáxia de estrelas
+        function createGalaxyStars() {
+            const container = document.getElementById('galaxyStars');
+            const starCount = 150;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                
+                const size = Math.random() * 2 + 0.5;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.animationDelay = `${Math.random() * 3}s`;
+                star.style.animationDuration = `${Math.random() * 2 + 2}s`;
+                
+                container.appendChild(star);
+            }
+        }
         
         // Cria partículas flutuantes
         function createFloatingParticles() {
